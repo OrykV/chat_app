@@ -1,14 +1,11 @@
-from django.test import TestCase
 from django.urls import reverse
-from users.models import Account
-
-from chat_room.models import Message, ChatRoom
 
 from rest_framework import status
 from rest_framework.test import APITestCase
 from rest_framework.authtoken.models import Token
 
 from chat_room import models
+from users.models import Account
 
 
 class ChatRoomTestCase(APITestCase):
@@ -22,7 +19,6 @@ class ChatRoomTestCase(APITestCase):
         self.client.post(reverse('login'), {"username": "api9@gmail.com", "password": "useruser"})
         self.token = Token.objects.get(user__username="api9@gmail.com")
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
-        # self.room = models.ChatRoom.objects.create(name = "Test")
 
     def test_chatroom_create(self):
         data = {
@@ -104,3 +100,5 @@ class MessageTestCase(APITestCase):
         self.test_message_create()
         response = self.client.put(reverse('message-dislike', args=(1,)))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+

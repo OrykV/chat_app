@@ -1,9 +1,8 @@
 from rest_framework import generics, status
-
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 from rest_framework.views import APIView
-
 from rest_framework.response import Response
+
 from chat_room.models import ChatRoom, Message
 from chat_room.serializers import ChatRoomSerializer, MessageSerializer
 from chat_room.api.permissions import IsMessageUserOrReadOnly
@@ -49,9 +48,6 @@ class MessageCreate(generics.CreateAPIView):
         room = ChatRoom.objects.get(pk=pk)
         if isinstance(self.request.user, Account):
             message_author = self.request.user
-        # else:
-        #     message_author = Account.objects.get(id=56)
-        #     message_author = None
         room.posts_quantity = room.posts_quantity + 1
         room.save()
         serializer.save(room=room, message_author=message_author)
